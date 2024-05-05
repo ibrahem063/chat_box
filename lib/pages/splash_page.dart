@@ -1,26 +1,29 @@
+import 'package:chat_box/services/cloud_storage_services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import '../services/database_services.dart';
+import '../services/navigation_services.dart';
+import '../services/media_services.dart';
 
-import '../firebase_options.dart';
-
-class Splash_Screen extends StatefulWidget {
+class SplashScreen extends StatefulWidget {
   final VoidCallback onInitializationComplete;
 
-  const Splash_Screen(
+  const SplashScreen(
       {required this.onInitializationComplete, required Key key})
       : super(key: key);
 
   @override
-  State<Splash_Screen> createState() => _Splash_ScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _Splash_ScreenState extends State<Splash_Screen> {
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _setup().then(
-      (_) => widget.onInitializationComplete(),
-    );
+    Future.delayed(const Duration(seconds: 1)).then((value) {
+      widget.onInitializationComplete();
+    });
   }
 
   @override
@@ -54,6 +57,17 @@ class _Splash_ScreenState extends State<Splash_Screen> {
     _registerServices();
   }
   void  _registerServices(){
-
+    GetIt.instance.registerSingleton<NavigationServices>(
+      NavigationServices(),
+    );
+    GetIt.instance.registerSingleton<MediaService>(
+      MediaService(),
+    );
+    GetIt.instance.registerSingleton<CloudStorageService>(
+      CloudStorageService(),
+    );
+    GetIt.instance.registerSingleton<DatabaseService>(
+      DatabaseService(),
+    );
   }
 }
